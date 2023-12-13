@@ -5,10 +5,10 @@ jobs:
     name: Access server
     runs-on: ubuntu-latest
     steps:
-      - name: Create a file
-        uses: appleboy/ssh-action@main
+      — name: Create a file
+        uses: appleboy/ssh-action@master
         with:
-          host: 13.246.39.187
-          username: ubuntu
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: echo hello world > hello.txt
