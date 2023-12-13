@@ -1,0 +1,23 @@
+name: Deploy on server
+on:
+push:
+  branches:
+    — master
+jobs:
+  deploy:
+    name: Deploy branch master
+    runs-on: ubuntu-latest
+    steps:
+      — name: Checkout and restart the server
+        uses: appleboy/ssh-action@main
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/polls/polls
+            git checkout — *
+            git checkout master
+            git pull origin master
+            sudo kill $(ps aux | grep gunicorn | grep -v grep | awk ‘{print $2}’)
+            sudo /home/ubuntu/polls/.venv/bin/gunicorn — daemon —  workers=4 mysite.wsgi:application -b 0.0.0.0:80
