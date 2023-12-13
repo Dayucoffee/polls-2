@@ -5,7 +5,7 @@ push:
     — master
 jobs:
   deploy:
-    name: Deploy branch master
+    name: Deploy branch main
     runs-on: ubuntu-latest
     steps:
       — name: Checkout and restart the server
@@ -17,7 +17,7 @@ jobs:
           script: |
             cd /home/ubuntu/polls/polls
             git checkout — *
-            git checkout master
-            git pull origin master
+            git checkout main
+            git pull origin main
             sudo kill $(ps aux | grep gunicorn | grep -v grep | awk ‘{print $2}’)
             sudo /home/ubuntu/polls/.venv/bin/gunicorn — daemon —  workers=4 mysite.wsgi:application -b 0.0.0.0:80
